@@ -12,24 +12,29 @@ body { font-family: sans-serif; text-align: center; margin-top: 40px; }
 <h1>Craps Simulator</h1>
 <p>Balance: $<span id="balance"></span></p>
 <p>Point: <span id="point">None</span></p>
+<p>Shooter: <span id="shooter"></span></p>
 <button id="roll">Bet $25 & Roll</button>
 <div id="log"></div>
 <script src="src/craps.js"></script>
+<script src="src/table.js"></script>
 <script>
 const game = new CrapsGame();
+const table = new CrapsTable(game);
 const balanceEl = document.getElementById('balance');
 const pointEl = document.getElementById('point');
 const logEl = document.getElementById('log');
+const shooterEl = document.getElementById('shooter');
 function updateUI(result, log) {
   balanceEl.textContent = game.balance;
   pointEl.textContent = game.point || 'None';
+  shooterEl.textContent = table.shooter.name;
   if (result) {
     logEl.textContent += `${log.d1}+${log.d2}=${log.total} -> ${result}\n`;
   }
 }
 updateUI();
 document.getElementById('roll').addEventListener('click', () => {
-  const res = game.playRound();
+  const res = table.roll();
   const latest = game.log[game.log.length - 1];
   updateUI(res, latest);
 });
