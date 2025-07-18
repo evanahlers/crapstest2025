@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Craps Simulator</title>
+<style>
+body { font-family: sans-serif; text-align: center; margin-top: 40px; }
+#log { width: 300px; margin: 20px auto; padding: 10px; border: 1px solid #ccc; white-space: pre-line; }
+</style>
+</head>
+<body>
+<h1>Craps Simulator</h1>
+<p>Balance: $<span id="balance"></span></p>
+<p>Point: <span id="point">None</span></p>
+<button id="roll">Bet $25 & Roll</button>
+<div id="log"></div>
+<script src="src/craps.js"></script>
+<script>
+const game = new CrapsGame();
+const balanceEl = document.getElementById('balance');
+const pointEl = document.getElementById('point');
+const logEl = document.getElementById('log');
+function updateUI(result, log) {
+  balanceEl.textContent = game.balance;
+  pointEl.textContent = game.point || 'None';
+  if (result) {
+    logEl.textContent += `${log.d1}+${log.d2}=${log.total} -> ${result}\n`;
+  }
+}
+updateUI();
+document.getElementById('roll').addEventListener('click', () => {
+  const res = game.playRound();
+  const latest = game.log[game.log.length - 1];
+  updateUI(res, latest);
+});
+</script>
+</body>
+</html>

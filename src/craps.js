@@ -1,5 +1,12 @@
 // Simple craps engine for local testing
-class CrapsGame {
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.CrapsGame = factory();
+  }
+}(typeof self !== 'undefined' ? self : this, function () {
+  class CrapsGame {
   constructor() {
     this.point = null; // null when off
     this.log = [];
@@ -44,6 +51,6 @@ class CrapsGame {
     this.log.push({d1,d2,total,result,balance:this.balance,point:this.point});
     return result;
   }
-}
-
-module.exports = CrapsGame;
+  }
+  return CrapsGame;
+}));
